@@ -9,8 +9,17 @@ export const useTourGuideController = () => {
     eventEmitter,
     getCurrentStep,
   } = React.useContext(TourGuideContext)
+  console.log("change controller")
+
+  const startFunc = React.useCallback((fromStep, scrollView) => {
+    console.log("Change callback inside controller", start)
+    if(start) {
+      start(fromStep, scrollView)
+    }
+  },[start])
+
   return {
-    start,
+    start: startFunc,
     stop,
     eventEmitter,
     getCurrentStep,

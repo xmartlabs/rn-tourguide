@@ -17,6 +17,8 @@ interface TourGuideZoneByPositionProps {
   containerStyle?: StyleProp<ViewStyle>
   keepTooltipPosition?: boolean
   tooltipBottomOffset?: number
+  insideScroll?: boolean
+  scrollAdjustment?: number
 }
 
 export const TourGuideZoneByPosition = ({

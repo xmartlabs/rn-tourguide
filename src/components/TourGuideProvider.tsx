@@ -9,7 +9,7 @@ import { Modal } from './Modal'
 import { OFFSET_WIDTH } from './style'
 import { TooltipProps } from './Tooltip'
 
-const { useMemo, useEffect, useState, useRef } = React
+const { useMemo, useEffect, useState, useRef, useCallback } = React
 
 /*
 This is the maximum wait time for the steps to be registered before starting the tutorial
@@ -95,34 +95,35 @@ export const TourGuideProvider = ({
     })
   }
 
-  const setCurrentStep = async (step?: IStep ) => {
+  const setCurrentStep = async (step?: IStep) => {
     updateCurrentStep(() => {
-        eventEmitter.emit('stepChange', step);
-        return step;
+      eventEmitter.emit('stepChange', step);
+      return step;
     });
 
     if (scrollView) {
-        if (step?.insideScroll) {
-            await step.wrapper.measureLayout(
-                findNodeHandle(scrollView?.current?.getNode() as any), (_x: number, y: number, _w: number, h: number) => {
-                  const yOffset = y > 0 ? y - step.scrollAdjustment - (h / 2) : - step.scrollAdjustment;
-                  scrollView?.current?.getNode().scrollTo({ y: yOffset, animated: false });
-                });
-        }else{
-            scrollView?.current?.getNode().scrollTo({ y: step?.scrollAdjustment ?? 0, animated: false });
-        }
+      const adjustment = step?.scrollAdjustment ?? 0
+      if (step?.insideScroll) {
+        await step.wrapper.measureLayout(
+          findNodeHandle(scrollView?.current?.getNode() as any), (_x: number, y: number, _w: number, h: number) => {
+            const yOffset = y > 0 ? y + adjustment - (h / 2) : adjustment;
+            scrollView?.current?.getNode().scrollTo({ y: yOffset, animated: false });
+          });
+      } else {
+        scrollView?.current?.getNode().scrollTo({ y: adjustment, animated: false });
+      }
     }
-};
+  };
 
-  const getNextStep = (step: IStep | undefined = currentStep) =>
-    utils.getNextStep(steps!, step)
+  const getNextStep = useCallback((step: IStep | undefined = currentStep) =>
+    utils.getNextStep(steps!, step), [steps])
 
-  const getPrevStep = (step: IStep | undefined = currentStep) =>
-    utils.getPrevStep(steps!, step)
+  const getPrevStep = useCallback((step: IStep | undefined = currentStep) =>
+    utils.getPrevStep(steps!, step), [steps])
 
-  const getFirstStep = () => utils.getFirstStep(steps!)
+  const getFirstStep = useCallback(() => utils.getFirstStep(steps!), [steps])
 
-  const getLastStep = () => utils.getLastStep(steps!)
+  const getLastStep = useCallback(() => utils.getLastStep(steps!), [steps])
 
   const isFirstStep = useMemo(() => currentStep === getFirstStep(), [
     currentStep,
@@ -161,43 +162,51 @@ export const TourGuideProvider = ({
 
   const getCurrentStep = () => currentStep
 
-  const start = async (fromStep?: number, scrollView?: React.RefObject<Animated.LegacyRef<ScrollView>>) => {
-    const currentStep = fromStep
-      ? (steps as StepObject)[fromStep]
-      : getFirstStep()
+  const start = useCallback(
+    async (fromStep?: number, scrollView?: React.RefObject<Animated.LegacyRef<ScrollView>>) => {
+      const currentStep = fromStep
+        ? (steps as StepObject)[fromStep]
+        : getFirstStep()
 
-    if (startTries.current > MAX_START_TRIES) {
-      startTries.current = 0
-      return
-    }
+      if (startTries.current > MAX_START_TRIES) {
+        startTries.current = 0
+        return
+      }
 
-    if (scrollView) {
-      setScrollView(scrollView)
-    }
+      if (scrollView) {
+        setScrollView(scrollView)
+      }
 
-    if (!currentStep) {
-      startTries.current += 1
-      requestAnimationFrame(() => start(fromStep))
-    } else {
-      eventEmitter.emit('start')
-      await setCurrentStep(currentStep!)
-      setVisible(true)
-      startTries.current = 0
-    }
-  }
+      if (!currentStep) {
+        startTries.current += 1
+        requestAnimationFrame(() => start(fromStep))
+      } else {
+        eventEmitter.emit('start')
+        await setCurrentStep(currentStep!)
+        setVisible(true)
+        startTries.current = 0
+      }
+    }, [steps, scrollView])
+
+  const valueProvider = useMemo(() => {
+    console.log("Change value provider")
+    return({
+      eventEmitter,
+      registerStep,
+      unregisterStep,
+      getCurrentStep,
+      start,
+      stop,
+      canStart,
+      steps
+    })
+  },[start, steps])
 
   return (
     <View style={[styles.container, wrapperStyle]}>
+      {console.log("here render")}
       <TourGuideContext.Provider
-        value={{
-          eventEmitter,
-          registerStep,
-          unregisterStep,
-          getCurrentStep,
-          start,
-          stop,
-          canStart,
-        }}
+        value={valueProvider}
       >
         {children}
         <Modal

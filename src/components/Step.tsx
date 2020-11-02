@@ -15,7 +15,7 @@ interface Props {
   keepTooltipPosition?: boolean
   tooltipBottomOffset?: number
   borderRadiusObject?: BorderRadiusObject
-  insideScroll: boolean
+  insideScroll?: boolean
   scrollAdjustment?: number
 }
 
