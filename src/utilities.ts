@@ -12,27 +12,27 @@ import {
   ValueXY,
 } from './types'
 
-export const getFirstStep = (steps: Steps): IStep | null =>
+export const getFirstStep = (steps: Steps, tag?: string): IStep | null =>
   steps &&
-  Object.values(steps).reduce(
+  Object.values(steps).filter((a: IStep) => a.tag === tag).reduce(
     (a: IStep | null, b) => (!a || a.order > b.order ? b : a),
     null,
   )
 
-export const getLastStep = (steps: Steps): IStep | null =>
+export const getLastStep = (steps: Steps, tag?: string): IStep | null =>
   steps &&
-  Object.values(steps).reduce(
+  Object.values(steps).filter((a: IStep) => a.tag === tag).reduce(
     (a: IStep | null, b) => (!a || a.order < b.order ? b : a),
     null,
   )
 
 export const getStepNumber = (steps: Steps, step?: IStep): number | undefined =>
   step &&
-  Object.values(steps).filter((_step) => _step.order <= step.order).length
+  Object.values(steps).filter((_step) => _step.order <= step.order && _step.tag === step.tag).length
 
 export const getPrevStep = (steps: Steps, step?: IStep): IStep | null =>
   Object.values(steps)
-    .filter((_step) => _step.order < step!.order)
+    .filter((_step) => _step.order < step!.order && _step.tag === step?.tag)
     .reduce((a: IStep | null, b) => (!a || a.order < b.order ? b : a), null)
 
 export const getNextStep = (
@@ -40,7 +40,7 @@ export const getNextStep = (
   step?: IStep,
 ): IStep | null | undefined =>
   Object.values(steps)
-    .filter((_step) => _step.order > step!.order)
+    .filter((_step) => _step.order > step!.order && _step.tag === step?.tag)
     .reduce((a: IStep | null, b) => (!a || a.order > b.order ? b : a), null) ||
   step
 

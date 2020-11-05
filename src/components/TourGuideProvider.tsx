@@ -110,26 +110,26 @@ export const TourGuideProvider = ({
             scrollView?.current?.getNode().scrollTo({ y: yOffset, animated: false });
           });
       } else {
-        scrollView?.current?.getNode().scrollTo({ y: adjustment, animated: false });
+        scrollView.current?.getNode().scrollTo({ y: adjustment, animated: false });
       }
     }
   };
 
-  const getNextStep = useCallback((step: IStep | undefined = currentStep) =>
-    utils.getNextStep(steps!, step), [steps])
+  const getNextStep = (step: IStep | undefined = currentStep) =>
+    utils.getNextStep(steps!, step)
 
-  const getPrevStep = useCallback((step: IStep | undefined = currentStep) =>
-    utils.getPrevStep(steps!, step), [steps])
+  const getPrevStep = (step: IStep | undefined = currentStep) =>
+    utils.getPrevStep(steps!, step)
 
-  const getFirstStep = useCallback(() => utils.getFirstStep(steps!), [steps])
+  const getFirstStep = (currentStep?: IStep ) => utils.getFirstStep(steps!, currentStep?.tag)
 
-  const getLastStep = useCallback(() => utils.getLastStep(steps!), [steps])
+  const getLastStep = (currentStep?: IStep ) => utils.getLastStep(steps!, currentStep?.tag)
 
-  const isFirstStep = useMemo(() => currentStep === getFirstStep(), [
+  const isFirstStep = useMemo(() => currentStep === getFirstStep(currentStep), [
     currentStep,
   ])
 
-  const isLastStep = useMemo(() => currentStep === getLastStep(), [currentStep])
+  const isLastStep = useMemo(() => currentStep === getLastStep(currentStep), [currentStep])
 
   const next = () => setCurrentStep(getNextStep()!)
 
@@ -138,6 +138,10 @@ export const TourGuideProvider = ({
   const stop = () => {
     setVisible(false)
     setCurrentStep(undefined)
+    if (scrollView) {
+      scrollView.current?.getNode().scrollTo({ y: -300, animated: false });
+      setScrollView(undefined)
+    }
   }
 
   const registerStep = (step: IStep) => {
@@ -163,9 +167,11 @@ export const TourGuideProvider = ({
   const getCurrentStep = () => currentStep
 
   const start = useCallback(
-    async (fromStep?: number, scrollView?: React.RefObject<Animated.LegacyRef<ScrollView>>) => {
-      const currentStep = fromStep
-        ? (steps as StepObject)[fromStep]
+    async (flowTag?: string, scrollView?: React.RefObject<Animated.LegacyRef<ScrollView>>) => {
+      const currentStep = flowTag
+        ? Object.values(steps as StepObject)
+          .filter((step) => flowTag === step.tag)
+          .sort((a, b) => a.order-b.order)[0]
         : getFirstStep()
 
       if (startTries.current > MAX_START_TRIES) {
@@ -179,7 +185,7 @@ export const TourGuideProvider = ({
 
       if (!currentStep) {
         startTries.current += 1
-        requestAnimationFrame(() => start(fromStep))
+        requestAnimationFrame(() => start(flowTag))
       } else {
         eventEmitter.emit('start')
         await setCurrentStep(currentStep!)
@@ -189,7 +195,6 @@ export const TourGuideProvider = ({
     }, [steps, scrollView])
 
   const valueProvider = useMemo(() => {
-    console.log("Change value provider")
     return({
       eventEmitter,
       registerStep,
@@ -198,13 +203,11 @@ export const TourGuideProvider = ({
       start,
       stop,
       canStart,
-      steps
     })
   },[start, steps])
 
   return (
     <View style={[styles.container, wrapperStyle]}>
-      {console.log("here render")}
       <TourGuideContext.Provider
         value={valueProvider}
       >

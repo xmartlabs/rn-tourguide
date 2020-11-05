@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import { BorderRadiusObject, Shape } from '../types'
+import { BorderRadiusObject, CommonProps, Shape } from '../types'
 import { TourGuideZone } from './TourGuideZone'
 
-interface TourGuideZoneByPositionProps {
+interface TourGuideZoneByPositionProps extends CommonProps {
   zone: number
   isTourGuide?: boolean
   top?: number | string
@@ -35,6 +35,7 @@ export const TourGuideZoneByPosition = ({
   keepTooltipPosition,
   tooltipBottomOffset,
   borderRadiusObject,
+  tag
 }: TourGuideZoneByPositionProps) => {
   if (!isTourGuide) {
     return null
@@ -46,6 +47,7 @@ export const TourGuideZoneByPosition = ({
       style={[StyleSheet.absoluteFillObject, containerStyle]}
     >
       <TourGuideZone
+        tag={tag}
         isTourGuide
         {...{
           zone,

@@ -4,22 +4,28 @@ export type Shape =
   | 'circle_and_keep'
   | 'rectangle_and_keep'
 
-export interface IStep {
-  name: string
-  order: number
+export interface IStep extends CommonProps {
   visible?: boolean
   target: any
-  text: string
   wrapper: any
-  shape?: Shape
-  maskOffset?: number
-  borderRadius?: number
+}
+
+export interface CommonProps {
+  name: string
+  order: number
+  text: string
+  tag: string
   keepTooltipPosition?: boolean
   tooltipBottomOffset?: number
   borderRadiusObject?: BorderRadiusObject
   insideScroll?: boolean
   scrollAdjustment?: number
+  maskOffset?: number
+  borderRadius?: number
+  shape?: Shape
 }
+
+
 export interface StepObject {
   [key: string]: IStep
 }

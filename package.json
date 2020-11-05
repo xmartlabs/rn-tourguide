@@ -1,6 +1,6 @@
 {
   "name": "@xmartlabs/react-native-tourguide",
-  "version": "2.7.7",
+  "version": "3.0.0",
   "description": "Make an interactive step by step tour guide for your react-native app (An enhanced version of rn-tourguide)",
   "main": "node_modules/expo/AppEntry.js",
   "types": "lib/index.d.ts",

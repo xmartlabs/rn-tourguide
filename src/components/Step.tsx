@@ -1,25 +1,14 @@
-import * as React from 'react'
-import { BorderRadiusObject, Shape } from '../types'
+import React, { useContext } from 'react'
+import { CommonProps } from '../types'
 import { ConnectedStep } from './ConnectedStep'
 import { TourGuideContext } from './TourGuideContext'
 
-interface Props {
-  name: string
-  order: number
-  text: string
-  shape?: Shape
+interface LayoutProps extends CommonProps{
   active?: boolean
-  maskOffset?: number
-  borderRadius?: number
   children: React.ReactNode
-  keepTooltipPosition?: boolean
-  tooltipBottomOffset?: number
-  borderRadiusObject?: BorderRadiusObject
-  insideScroll?: boolean
-  scrollAdjustment?: number
 }
 
-export const Step = (props: Props) => {
-  const context = React.useContext(TourGuideContext)
+export const Step: React.FC<LayoutProps> = (props) => {
+  const context = useContext(TourGuideContext)
   return <ConnectedStep {...{ ...props, context }} />
 }

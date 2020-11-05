@@ -18,6 +18,7 @@ export interface TourGuideZoneProps {
   borderRadiusObject?: BorderRadiusObject
   insideScroll?: boolean
   scrollAdjustment?: number
+  tag: string
 }
 
 export const TourGuideZone = ({
@@ -34,6 +35,7 @@ export const TourGuideZone = ({
   borderRadiusObject,
   insideScroll = false,
   scrollAdjustment = -300,
+  tag
 }: TourGuideZoneProps) => {
   if (!isTourGuide) {
     return <>{children}</>
@@ -43,6 +45,7 @@ export const TourGuideZone = ({
     <Step
       text={text ?? `Zone ${zone}`}
       order={zone}
+      tag={tag}
       name={`${zone}`}
       insideScroll={insideScroll}
       scrollAdjustment={scrollAdjustment}

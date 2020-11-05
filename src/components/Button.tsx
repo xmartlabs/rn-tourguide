@@ -9,7 +9,7 @@ interface Props {
   children?: any
 }
 
-export const Button = ({ wrapperStyle, style, children, ...rest }: Props) => (
+export const Button: React.FC<Props> = ({ wrapperStyle, style, children, ...rest }) => (
   <View style={[styles.button, wrapperStyle]}>
     <Text style={[styles.buttonText, style]} {...rest}>
       {children}

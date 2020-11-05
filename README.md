@@ -6,36 +6,10 @@
   <br/><small>(a rewriting of react-native-copilot)</small>
 </p>
 
-<p align="center">
-  <img width="250" src="https://www.dropbox.com/s/9heua3qgd66125k/rn-tourguide.gif?dl=0&raw=1" alt="RN Tourguide" />
-</p>
-<p align="center">
-    <a href="https://xcarpentier.github.io/rn-tourguide/">
-      🎉DEMO WEB 🎉
-    </a>
-</p>
-
-<div align="center">
-  <p align="center">
-    <a href="https://www.npmjs.com/package/rn-tourguide">
-      <img alt="npm downloads" src="https://img.shields.io/npm/dm/rn-tourguide.svg"/>
-    </a>
-    <a href="https://www.npmjs.com/package/rn-tourguide">
-      <img src="https://img.shields.io/npm/v/rn-tourguide.svg" alt="NPM Version" />
-    </a>
-    <a href="http://reactnative.gallery/xcarpentier/rn-tourguide">
-      <img src="https://img.shields.io/badge/reactnative.gallery-%F0%9F%8E%AC-green.svg"/></a>
-    </a>
-    <a href="#hire-an-expert">
-      <img src="https://img.shields.io/badge/%F0%9F%92%AA-hire%20an%20expert-brightgreen"/>
-    </a>
-  </p>
-</div>
-
 ## Installation
 
 ```
-yarn add rn-tourguide
+yarn add @xmartlabs/react-native-tourguide
 ```
 
 ```
@@ -57,7 +31,7 @@ import {
   TourGuideZone, // Main wrapper of highlight component
   TourGuideZoneByPosition, // Component to use mask on overlay (ie, position absolute)
   useTourGuideController, // hook to start, etc.
-} from 'rn-tourguide'
+} from '@xmartlabs/react-native-tourguide'
 
 // Add <TourGuideProvider/> at the root of you app!
 function App() {
@@ -109,7 +83,7 @@ const AppContent = () => {
         borderRadius={16}
       >
         <Text style={styles.title}>
-          {'Welcome to the demo of\n"rn-tourguide"'}
+          {'Welcome to the demo of\n"@xmartlabs/react-native-tourguide"'}
         </Text>
       </TourGuideZone>
       <View style={styles.middleView}>
@@ -314,11 +288,6 @@ List of available events is:
 
 Issues and Pull Requests are always welcome.
 
-## Hire an expert!
-
-Looking for a ReactNative freelance expert with more than 14 years experience? Contact me from my [website](https://xaviercarpentier.com)!
-
 ## License
 
-- [MIT](LICENSE) © 2020 Xavier CARPENTIER SAS, https://xaviercarpentier.com.
-- [MIT](LICENSE) © 2017 OK GROW!, https://www.okgrow.com.
+- [MIT](LICENSE) Xmartlabs

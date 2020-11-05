@@ -12,11 +12,10 @@ export interface Emitter {
 export interface ITourGuideContext {
   eventEmitter?: Emitter
   canStart: boolean
-  steps?: any
   registerStep?(step: IStep): void
   unregisterStep?(stepName: string): void
   getCurrentStep?(): IStep | undefined
-  start?(fromStep?: number, scrollView?: React.RefObject<Animated.LegacyRef<ScrollView>>): void
+  start?(flowTag?: string, scrollView?: React.RefObject<Animated.LegacyRef<ScrollView>>): void
   stop?(): void
 }
 
