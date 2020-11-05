@@ -9,6 +9,7 @@ export const useTourGuideController = () => {
     eventEmitter,
     getCurrentStep,
   } = React.useContext(TourGuideContext)
+
   return {
     start,
     stop,

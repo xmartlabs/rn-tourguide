@@ -1,25 +1,16 @@
 import * as React from 'react'
-import { BorderRadiusObject, Shape } from '../types'
+import { CommonProps } from '../types'
 import { ITourGuideContext } from './TourGuideContext'
 
 declare var __TEST__: boolean
 
-interface Props {
-  name: string
-  text: string
-  order: number
+interface LayoutProps extends CommonProps{
   active?: boolean
-  shape?: Shape
   context: ITourGuideContext
   children?: any
-  maskOffset?: number
-  borderRadiusObject?: BorderRadiusObject
-  borderRadius?: number
-  keepTooltipPosition?: boolean
-  tooltipBottomOffset?: number
 }
 
-export class ConnectedStep extends React.Component<Props> {
+export class ConnectedStep extends React.Component<LayoutProps> {
   static defaultProps = {
     active: true,
   }
@@ -30,7 +21,7 @@ export class ConnectedStep extends React.Component<Props> {
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: LayoutProps) {
     if (this.props.active !== prevProps.active) {
       if (this.props.active) {
         this.register()

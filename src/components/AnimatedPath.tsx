@@ -5,6 +5,6 @@ import { Path, PathProps } from 'react-native-svg'
 export const AnimatedSvgPath: React.ComponentType<
   PathProps & { ref: any }
 > = Platform.select({
-  default: Animated.createAnimatedComponent(Path),
+  default: Animated.createAnimatedComponent(Path) as any,
   web: Path,
 })

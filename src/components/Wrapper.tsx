@@ -6,7 +6,7 @@ interface WrapperProps {
   children?: React.ReactNode
   style?: StyleProp<ViewStyle>
 }
-export const Wrapper = ({ copilot, children, style }: WrapperProps) => (
+export const Wrapper: React.FC<WrapperProps> = ({ copilot, children, style }) => (
   <View style={style} {...copilot}>
     {children}
   </View>
