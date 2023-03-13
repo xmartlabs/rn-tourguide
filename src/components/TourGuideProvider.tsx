@@ -5,7 +5,6 @@ import {
   StyleSheet,
   View,
   ViewStyle,
-  Animated,
   ScrollView,
   findNodeHandle,
 } from 'react-native'
@@ -59,7 +58,7 @@ export const TourGuideProvider = ({
   const [steps, setSteps] = useState<Steps>({})
   const [canStart, setCanStart] = useState<boolean>(false)
   const [scrollView, setScrollView] = useState<
-    React.RefObject<Animated.LegacyRef<ScrollView>> | undefined
+    React.RefObject<ScrollView> | undefined
   >(undefined)
 
   const startTries = useRef<number>(0)
@@ -115,18 +114,14 @@ export const TourGuideProvider = ({
       const adjustment = step?.scrollAdjustment ?? 0
       if (step?.insideScroll) {
         await step.wrapper.measureLayout(
-          findNodeHandle(scrollView?.current?.getNode() as any),
+          findNodeHandle(scrollView?.current as any),
           (_x: number, y: number, _w: number, h: number) => {
             const yOffset = y > 0 ? y + adjustment - h / 2 : adjustment
-            scrollView?.current
-              ?.getNode()
-              .scrollTo({ y: yOffset, animated: false })
+            scrollView?.current?.scrollTo({ y: yOffset, animated: false })
           },
         )
       } else {
-        scrollView.current
-          ?.getNode()
-          .scrollTo({ y: adjustment, animated: false })
+        scrollView.current?.scrollTo({ y: adjustment, animated: false })
       }
     }
   }
@@ -161,7 +156,7 @@ export const TourGuideProvider = ({
     setVisible(false)
     setCurrentStep(undefined)
     if (scrollView) {
-      scrollView.current?.getNode()?.scrollTo({ y: -300, animated: false })
+      scrollView.current?.scrollTo({ y: -300, animated: false })
       setScrollView(undefined)
     }
   }
@@ -191,8 +186,8 @@ export const TourGuideProvider = ({
   const start = useCallback(
     async (
       flowTag?: string,
-      scrollView?: React.RefObject<Animated.LegacyRef<ScrollView>>,
-    ) => {
+      scrollView?: React.RefObject<ScrollView>,
+    ): Promise<void> => {
       const currentStep = flowTag
         ? Object.values(steps as StepObject)
             .filter((step) => flowTag === step.tag)

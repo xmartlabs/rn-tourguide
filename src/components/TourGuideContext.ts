@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Animated, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 import { IStep } from '../types'
 
 export type Handler = (event?: any) => void
@@ -13,17 +13,12 @@ export interface ITourGuideContext {
   eventEmitter?: Emitter
   canStart: boolean
   setScrollView?: React.Dispatch<
-    React.SetStateAction<
-      React.RefObject<Animated.LegacyRef<ScrollView>> | undefined
-    >
+    React.SetStateAction<React.RefObject<ScrollView> | undefined>
   >
   registerStep?(step: IStep): void
   unregisterStep?(stepName: string): void
   getCurrentStep?(): IStep | undefined
-  start?(
-    flowTag?: string,
-    scrollView?: React.RefObject<Animated.LegacyRef<ScrollView>>,
-  ): void
+  start?(flowTag?: string, scrollView?: React.RefObject<ScrollView>): void
   stop?(): void
 }
 
