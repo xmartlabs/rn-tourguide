@@ -32,10 +32,10 @@ export interface ModalProps {
   androidStatusBarVisible: boolean
   backdropColor: string
   labels: Labels
-  easing(value: number): number
-  stop(): void
-  next(): void
-  prev(): void
+  easing?: (value: number) => number
+  stop: () => void
+  next: () => void
+  prev: () => void
 }
 
 interface Layout {

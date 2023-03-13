@@ -1,8 +1,8 @@
 {
   "name": "@xmartlabs/react-native-tourguide",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Make an interactive step by step tour guide for your react-native app (An enhanced version of rn-tourguide)",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "private": false,
   "scripts": {
@@ -12,15 +12,12 @@
     "tsc": "node_modules/.bin/tsc --noEmit",
     "tsc:watch": "node_modules/.bin/tsc --noEmit --watch",
     "build": "rm -rf lib/ && node_modules/.bin/tsc",
-    "config:dev": "json -I -f package.json -e 'this.main=\"node_modules/expo/AppEntry.js\"'",
     "config:npm": "json -I -f package.json -e 'this.main=\"lib/index.js\"'",
     "lint": "tslint --project .",
     "verify": "yarn test && yarn lint && yarn tsc && yarn build",
     "prepublishOnly": "yarn verify && yarn config:npm",
-    "postpublish": "yarn config:dev",
     "cleaning": "rm -rf node_modules && rm -f yarn.lock && yarn cache clean && yarn install && watchman watch-del-all && rm -fr $TMPDIR/react-*",
-    "deploy": "gh-pages -d web-build",
-    "predeploy": "yarn verify && expo build:web"
+    "deploy": "gh-pages -d web-build"
   },
   "repository": {
     "type": "git",
